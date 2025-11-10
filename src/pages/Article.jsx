@@ -1,4 +1,4 @@
-import { FaFacebook, FaTwitter, FaWhatsapp, FaLinkedin, FaTelegram, FaLink, FaArrowLeft, FaImage } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaWhatsapp, FaLinkedin, FaTelegram, FaLink, FaArrowLeft, FaImage, FaLanguage } from 'react-icons/fa';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { ref, get, onValue } from 'firebase/database';
@@ -174,16 +174,35 @@ const Article = () => {
     }
   };
 
-  // Share functionality
+  // Function to handle translation to Hindi
+  const handleTranslateToHindi = () => {
+    // This is a placeholder for translation functionality
+    // In a real implementation, you would call a translation API here
+    alert('Translation to Hindi would be implemented here');
+    // Example API call (uncomment and implement with your preferred translation service):
+    // translateToHindi(article.content).then(translatedContent => {
+    //   // Update the article content with translated text
+    //   article.content = translatedContent;
+    // });
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <button 
-        onClick={() => navigate(-1)}
-        className="mb-6 flex items-center text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-      >
-        <FaArrowLeft className="mr-2" /> Back
-      </button>
+      <div className="flex justify-between items-center mb-6">
+        <button 
+          onClick={() => navigate(-1)}
+          className="flex items-center text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors px-4 py-2 rounded-lg border border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+        >
+          <FaArrowLeft className="mr-2" /> Back
+        </button>
+        <button
+          onClick={handleTranslateToHindi}
+          className="flex items-center text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 transition-colors px-4 py-2 rounded-lg border border-green-500 hover:bg-green-50 dark:hover:bg-green-900/20"
+        >
+          <FaLanguage className="mr-2" />
+          Translate to Hindi
+        </button>
+      </div>
       
       {/* Article Header */}
       <div className="text-center mb-12">
