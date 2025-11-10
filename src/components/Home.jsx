@@ -1,43 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../firebase/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { Link } from 'react-router-dom';
 
-const Home = () => {
+const Home = ({ categories = ['All'], activeCategory = 'All', setActiveCategory }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuthenticated(!!user);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleReadMore = (e, articleId) => {
-    if (!isAuthenticated) {
-      e.preventDefault();
-      // Store the intended article URL before redirecting to login
-      navigate('/login', { 
-        state: { from: { pathname: `/article/${articleId}` } } 
-      });
-    } else {
-      // If authenticated, navigate to the article
-      navigate(`/article/${articleId}`);
-    }
-  };
-
-  const categories = [
-    'All',
-    'Programming',
-    'Web Development',
-    'Lifestyle',
-    'Health & Fitness',
-    'Productivity'
-  ];
 
   const cards = [
     {
@@ -114,8 +80,8 @@ const Home = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Category Tabs */}
-      <div className="flex flex-wrap justify-center gap-2 mb-6 px-4">
+      {/* Category Tabs - Hidden on mobile, visible on md and up */}
+      <div className="hidden md:flex flex-wrap justify-center gap-2 mb-6 px-4">
         {categories.map((category) => (
           <button
             key={category}
@@ -131,8 +97,8 @@ const Home = () => {
         ))}
       </div>
 
-      {/* Search Bar */}
-      <div className="flex justify-center mb-12">
+      {/* Search Bar - Hidden on mobile, visible on md and up */}
+      <div className="hidden md:flex justify-center mb-12">
         <div className="relative w-full max-w-2xl">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
           <div className="relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl overflow-hidden shadow-2xl">
@@ -174,9 +140,9 @@ const Home = () => {
                 {card.title}
               </h3>
               <p className="text-gray-300/90 mb-6 leading-relaxed flex-grow">{card.description}</p>
-              <button 
-                onClick={(e) => handleReadMore(e, card.id)}
-                className="mt-4 px-5 py-2.5 rounded-full border-2 border-blue-400/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-500/50 hover:text-white transition-all duration-300 group relative overflow-hidden"
+              <Link 
+                to={`/article/${card.id}`}
+                className="mt-4 px-5 py-2.5 rounded-full border-2 border-blue-400/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-500/50 hover:text-white transition-all duration-300 group relative overflow-hidden inline-flex items-center"
               >
                 <span className="relative z-10 flex items-center">
                   Read More
@@ -185,7 +151,7 @@ const Home = () => {
                   </span>
                 </span>
                 <span className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-              </button>
+              </Link>
             </div>
           </div>
         ))}
