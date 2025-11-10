@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
-const Home = ({ categories = ['All'], activeCategory = 'All', setActiveCategory }) => {
+const Home = ({ categories, activeCategory, setActiveCategory }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const cards = [
@@ -78,11 +78,14 @@ const Home = ({ categories = ['All'], activeCategory = 'All', setActiveCategory 
     return matchesSearch && matchesCategory;
   });
 
+  // Ensure categories is an array before mapping
+  const displayCategories = categories || [];
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Category Tabs - Hidden on mobile, visible on md and up */}
       <div className="hidden md:flex flex-wrap justify-center gap-2 mb-6 px-4">
-        {categories.map((category) => (
+        {displayCategories.map((category) => (
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
