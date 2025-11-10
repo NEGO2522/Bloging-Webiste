@@ -207,87 +207,85 @@ const Article = () => {
       {/* Article Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-          {article.title || '🌅 Benefits of Waking Up Early'}
+          {article.title || 'Untitled Article'}
         </h1>
-        <div className="flex items-center justify-center text-sm text-gray-500 dark:text-gray-400">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
           <span>By {article.author || 'Admin'}</span>
-          {article.date && (
-            <>
-              <span className="mx-2">•</span>
-              <span>{article.date}</span>
-            </>
-          )}
-          {article.readTime && (
-            <>
-              <span className="mx-2">•</span>
-              <span>{article.readTime}</span>
-            </>
-          )}
         </div>
       </div>
 
       {/* Article Content */}
-      <div className="max-w-3xl mx-auto">
-        <article className="prose dark:prose-invert prose-lg">
-          
-          <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-8">
-            An early morning routine can transform your life. Waking up early leads to amazing improvements in health, productivity, and mental wellness.
-          </p>
-          
-          <div className="space-y-10">
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">1. Better Mental Health</h2>
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
-                The peaceful morning time is perfect for meditation and planning. It reduces stress and provides a positive mindset.
+      <div className="max-w-3xl mx-auto px-4">
+        <article className="prose dark:prose-invert prose-lg max-w-none">
+          {article.content ? (
+            <div className="space-y-8 text-gray-700 dark:text-gray-300">
+              {/* Introduction */}
+              <p className="text-lg leading-relaxed">
+                {article.content.split('\n')[0]}
               </p>
-              <ul className="list-disc pl-6 space-y-2 mb-6 text-gray-700 dark:text-gray-300">
-                <li>Better focus in a peaceful environment</li>
-                <li>Morning sunlight provides vitamin D</li>
-                <li>Reduces depression and anxiety</li>
-                <li>Time to plan your day</li>
-              </ul>
-            </section>
-            
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">2. Improved Productivity</h2>
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
-                Morning time is the most productive. Your brain is fresh and there are fewer distractions.
-              </p>
-              <ul className="list-disc pl-6 space-y-2 mb-6 text-gray-700 dark:text-gray-300">
-                <li>Complete important tasks first</li>
-                <li>Get uninterrupted work time</li>
-                <li>Stay ahead during the day</li>
-                <li>Helps achieve goals</li>
-              </ul>
-            </section>
-            
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">3. Better Physical Health</h2>
-              <p className="text-gray-700 dark:text-gray-300">
-                Waking up early gives you time for exercise. A regular morning routine also improves your sleep cycle.
-              </p>
-            </section>
-            
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">4. Healthy Breakfast</h2>
-              <p className="text-gray-700 dark:text-gray-300">
-                Waking up early allows you to prepare and eat a proper breakfast. This boosts energy levels and metabolism.
-              </p>
-            </section>
-            
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">5. More Personal Time</h2>
-              <p className="text-gray-700 dark:text-gray-300 mb-6">
-                Use the extra morning time for your hobbies, reading, or self-care.
-              </p>
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border-l-4 border-blue-500">
-                <p className="font-medium text-blue-800 dark:text-blue-200 text-lg mb-2">How to Start:</p>
-                <p className="text-blue-700 dark:text-blue-300">
-                  Gradually start waking up 15-20 minutes earlier. Keep your alarm clock away from bed and reduce screen time before sleeping.
-                </p>
+              
+              {/* Main Content Sections */}
+              <div className="space-y-10">
+                {article.content.split('\n').slice(1).map((paragraph, index) => {
+                  // Skip empty lines
+                  if (!paragraph.trim()) return null;
+                  
+                  // Check if this is a section heading (starts with a number and period)
+                  const isSection = /^\d+\.\s+/.test(paragraph);
+                  const isListStart = /^\s*[•-]\s+/.test(paragraph);
+                  
+                  // If it's a section heading
+                  if (isSection) {
+                    const sectionTitle = paragraph.replace(/^\d+\.\s*/, '');
+                    return (
+                      <section key={index} className="space-y-4">
+                        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-4 py-1">
+                          {sectionTitle}
+                        </h2>
+                      </section>
+                    );
+                  }
+                  
+                  // If it's a list item
+                  if (isListStart) {
+                    const listItems = paragraph.split('•').filter(item => item.trim() !== '');
+                    return (
+                      <ul key={index} className="list-disc pl-6 space-y-2">
+                        {listItems.map((item, i) => (
+                          <li key={i} className="text-gray-700 dark:text-gray-300">
+                            {item.trim()}
+                          </li>
+                        ))}
+                      </ul>
+                    );
+                  }
+                  
+                  // If it's a regular paragraph
+                  return (
+                    <p key={index} className="leading-relaxed">
+                      {paragraph}
+                    </p>
+                  );
+                })}
+                
+                {/* How to Start Section */}
+                {article.content.includes('How to Start:') && (
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border-l-4 border-blue-500">
+                    <p className="font-medium text-blue-800 dark:text-blue-200 text-lg mb-2">
+                      How to Start:
+                    </p>
+                    <p className="text-blue-700 dark:text-blue-300">
+                      {article.content.split('How to Start:')[1]}
+                    </p>
+                  </div>
+                )}
               </div>
-            </section>
-          </div>
+            </div>
+          ) : (
+            <div className="text-center py-10">
+              <p className="text-gray-500 dark:text-gray-400">No content available for this article.</p>
+            </div>
+          )}
         </article>
       </div>
       

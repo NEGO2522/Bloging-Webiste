@@ -68,6 +68,27 @@ const Home = ({ categories, activeCategory, setActiveCategory }) => {
       title: '5 Golden Rules of Success',
       category: 'Productivity',
       description: 'Proven principles for success. Golden rules of goal setting, discipline, and consistent effort to achieve your dreams.'
+    },
+    {
+      id: 10,
+      emoji: '⏰',
+      title: '7 Time Management Tricks',
+      category: 'Productivity',
+      description: 'Effective time management techniques. Practical tips to boost productivity and balance work and life successfully.'
+    },
+    {
+      id: 11,
+      emoji: '💧',
+      title: '10 Easy Ways to Save Water',
+      category: 'Environment',
+      description: 'Simple water conservation methods. Learn how to save water in daily life with environment-friendly tips.'
+    },
+    {
+      id: 12,
+      emoji: '🌳',
+      title: 'Why Tree Plantation is Important',
+      category: 'Environment',
+      description: 'Importance of tree plantation. Understand the significance of trees for environment, health, and future generations.'
     }
   ];
 
